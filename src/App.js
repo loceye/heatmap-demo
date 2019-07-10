@@ -9,14 +9,30 @@ import styled from "styled-components";
 import simpleheat from "simpleheat";
 import Dropzone from "./components/Dropzone";
 import Column from "./components/Column";
+import Row from "./components/Row";
 import useEventListener from "./hooks/useEventListener";
 import Slider from "@material-ui/core/Slider";
 import { Button } from "@material-ui/core";
 import { createDidYouMeanMessage } from "jest-validate/build/utils";
+import { Hero } from "./components/Typography";
+
+const useForceUpdate = () => useState()[1];
+
+const Container = styled(Column)`
+  background-color: #e5e5e5;
+  padding: 4rem;
+  margin: 0;
+  height: 100vh;
+`;
+
+const Header = styled(Row)`
+  height: 100px;
+  color: blue;
+`;
 
 const Canvas = styled.canvas`
   position: absolute;
-  opacity: ${(props) => props.opacity || "1"};
+  opacity: ${(props) => props.opacity};
   top: 0;
   left: 0;
   z-index: 10;
@@ -31,11 +47,10 @@ const Controls = styled(Column)`
   width: 50%;
 `;
 
-let data = [];
-
 function App() {
   const imgEl = useRef(null);
   const canvasEl = useRef(null);
+  const [data, setData] = useState([]);
 
   const [image, setImage] = useState("");
   const [width, setWidth] = useState(1);
@@ -71,10 +86,11 @@ function App() {
     ({ clientX, clientY }) => {
       if (isSave) {
         setCoords({ x: clientX, y: clientY });
-        data = [...data, [clientX, clientY, 0.3]];
+        const rect = canvasEl.current.getBoundingClientRect();
+        setData([...data, [clientX - rect.left, clientY - rect.top, 0.3]]);
       }
     },
-    [setCoords, isSave]
+    [setCoords, isSave, setData, data]
   );
 
   const handlerMouseDown = useCallback(() => {
@@ -108,6 +124,7 @@ function App() {
 
       const dataUrl = canvas.toDataURL("image/png");
 
+      // Source: https://stackoverflow.com/questions/3749231/download-file-using-javascript-jquery
       const a = document.createElement("a");
       a.style.display = "none";
       a.href = dataUrl;
@@ -119,13 +136,19 @@ function App() {
     };
   };
 
+  const forceUpdate = useForceUpdate();
+
   return (
-    <div className="App">
+    <Container justify="flex-start">
+      <Header>
+        <Hero>Fake Heatmap</Hero> by <a href="https://www.loceye.io">Loceye</a>
+      </Header>
       <HeatmapWrapper>
         <img
           alt="Background Media"
           ref={imgEl} // onLoad={this.updateImageDimensions}
           src={image}
+          width="100%"
         />
         <Canvas
           ref={canvasEl}
@@ -136,40 +159,49 @@ function App() {
           opacity={opacity}
         />
       </HeatmapWrapper>
-      <Dropzone handleImage={setImage} />
-
-      <Controls>
-        Opacity:
-        <Slider
-          value={opacity}
-          onChange={handleOpacity}
-          aria-labelledby="opacity-slider"
-          min={0.1}
-          max={1}
-          step={0.05}
-        />
-        Radius:
-        <Slider
-          value={radius}
-          onChange={handleRadius}
-          aria-labelledby="opacity-slider"
-          min={5}
-          max={30}
-          step={1}
-        />
-        Blur:
-        <Slider
-          value={blur}
-          onChange={handleBlur}
-          aria-labelledby="opacity-slider"
-          min={1}
-          max={30}
-          step={1}
-        />
-      </Controls>
-
-      <Button onClick={download}>Download</Button>
-    </div>
+      {image === "" ? (
+        <Dropzone handleImage={setImage} />
+      ) : (
+        <Controls>
+          Opacity:
+          <Slider
+            value={opacity}
+            onChange={handleOpacity}
+            aria-labelledby="opacity-slider"
+            min={0.1}
+            max={1}
+            step={0.05}
+          />
+          Radius:
+          <Slider
+            value={radius}
+            onChange={handleRadius}
+            aria-labelledby="opacity-slider"
+            min={5}
+            max={30}
+            step={1}
+          />
+          Blur:
+          <Slider
+            value={blur}
+            onChange={handleBlur}
+            aria-labelledby="opacity-slider"
+            min={1}
+            max={30}
+            step={1}
+          />
+          <Button
+            onClick={() => {
+              setData([]);
+            }}
+          >
+            Clear
+          </Button>
+          <Button onClick={() => setImage("")}>Reset</Button>
+          <Button onClick={download}>Download</Button>
+        </Controls>
+      )}
+    </Container>
   );
 }
 

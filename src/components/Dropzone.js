@@ -7,7 +7,9 @@ import uuid from "uuid/v4";
 import { FiDownloadCloud } from "react-icons/fi";
 import { Body, SmallBody } from "./Typography";
 
-import { neutrals } from "../utils/colors";
+import { colors, borderRadius } from "../utils/theme";
+
+const { neutrals } = colors;
 
 const getColor = (props) => {
   if (props.isDragAccept) {
@@ -34,7 +36,7 @@ const Container = styled.div`
 
   padding: 20px;
   border-width: 2px;
-  border-radius: ${(props) => props.theme.borderRadius};
+  border-radius: ${borderRadius};
   border-color: ${(props) => getColor(props)};
   border-style: dashed;
 
