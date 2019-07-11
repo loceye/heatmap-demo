@@ -1,3 +1,4 @@
+import { hot } from "react-hot-loader/root";
 import React, { useState } from "react";
 import styled from "styled-components";
 
@@ -7,10 +8,15 @@ import Header from "./components/Header";
 import Heatmap from "./components/Heatmap";
 
 const Container = styled(Column)`
-  background-color: #e5e5e5;
+  background-color: #f2f4f6;
+  color: #212121;
   padding: 4rem;
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
+
+  * {
+    font-family: "Work Sans", sans-serif;
+  }
 `;
 
 function App() {
@@ -29,4 +35,4 @@ function App() {
   );
 }
 
-export default App;
+export default hot(App);
