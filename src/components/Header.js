@@ -6,13 +6,16 @@ import { Body, Hero } from "./Typography";
 
 const Container = styled(Column)`
   height: 100px;
-  color: blue;
+  a {
+    color: #212121;
+  }
 `;
 
 const Header = () => (
   <Container>
-    <Row>
-      <Hero>Fake Heatmap</Hero> by <a href="https://www.loceye.io">Loceye</a>
+    <Row alignItems="flex-end">
+      <Hero weight="bold">Fake Heatmap</Hero> by{" "}
+      <a href="https://www.loceye.io">Loceye</a>
     </Row>
     <Body>Click and drag your mouse to create magic</Body>
   </Container>

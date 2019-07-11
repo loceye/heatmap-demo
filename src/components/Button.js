@@ -106,19 +106,18 @@ const StyledButton = styled(({ color, iconRight, ...rest }) => (
     color: ${(props) => getColor(props.color)};
     text-transform: capitalize;
     border-radius: 4px;
-    padding: 8px 16px;
+    padding: 12px 21px;
     line-height: 21px;
-    font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 1rem;
     box-shadow: ${shadows[0]};
     width: ${(props) => (props.fitContainer ? "100%" : "auto")};
   }
 
   svg {
     ${(props) =>
-      props.iconRight ? ` margin-left: 0.25rem;` : ` margin-right: 0.25rem;`}
-    width: 12px;
-    height: 12px;
+      props.iconRight ? ` margin-left: 0.5rem;` : ` margin-right: 0.5rem;`}
+    width: 1rem;
+    height: 1rem;
   }
 
   &&.disabled {

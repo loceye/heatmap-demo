@@ -4,28 +4,50 @@ import simpleheat from "simpleheat";
 import Row from "./Row";
 import Controls from "./Controls";
 import useEventListener from "../hooks/useEventListener";
-
+import { darken } from "polished";
 const SIMPLEHEAT_VALUE = 0.3;
 
 const Container = styled(Row)`
-  width: 50%;
+  @media only screen and (max-width: 48em) {
+    width: 100%;
+    flex-direction: column;
+  }
+  @media only screen and (min-width: 48em) and (max-width: 60em) {
+    width: 100%;
+    flex-direction: column;
+  }
+  @media only screen and (min-width: 60em) and (max-width: 80em) {
+    width: 100%;
+  }
+  @media only screen and (min-width: 80em) and (max-width: 100em) {
+    width: 60%;
+  }
+  @media only screen and (min-width: 100em) {
+    width: 50%;
+  }
+
+  background-color: ${darken(0.05, "#f2f4f6")};
+  border-radius: 4px;
 `;
 
 const Canvas = styled.canvas`
   position: absolute;
   opacity: ${(props) => props.opacity};
-  top: 0;
-  left: 0;
+  top: 1rem;
+  left: 1rem;
   z-index: 10;
 `;
 
 const HeatmapContainer = styled.div`
   position: relative;
   width: 50%;
+  @media only screen and (max-width: 60em) {
+    width: 100%;
+    min-width: 100%;
+  }
+  box-sizing: border-box;
 
   padding: 1rem;
-  border: dotted #212121 2px;
-  ${"" /* border-radius: 16px; */}
 `;
 
 const Heatmap = ({ image, setImage }) => {

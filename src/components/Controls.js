@@ -1,20 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 import Slider from "@material-ui/core/Slider";
-import { Button } from "@material-ui/core";
-
+import Button from "./Button";
 import Column from "./Column";
+import Row from "./Row";
+
+import { FiTrash2, FiDownloadCloud, FiRefreshCw } from "react-icons/fi";
+import { Header2 } from "./Typography";
 
 const Container = styled(Column)`
+  padding: 1rem;
+
   width: 50%;
+  @media only screen and (max-width: 60em) {
+    width: 100%;
+    min-width: 100%;
+  }
 `;
 
 const SlidersContainer = styled(Column)`
-  width: 100%;
+  width: calc(100% - 1rem);
 `;
 
-const ButtonsContainer = styled(Column)`
-  width: 100%;
+const ButtonsContainer = styled(Row)`
+  width: calc(100% - 1rem);
+`;
+
+const CustomSlider = styled(Slider)`
+  && * {
+    color: #212121;
+  }
 `;
 
 function Controls({
@@ -29,10 +44,11 @@ function Controls({
   handleDownload,
 }) {
   return (
-    <Container>
+    <Container alignItems="flex-start">
+      <Header2 weight="bold">Customize your heatmap:</Header2>
       <SlidersContainer>
         Opacity:
-        <Slider
+        <CustomSlider
           value={opacity}
           onChange={handleOpacity}
           aria-labelledby="opacity-slider"
@@ -41,7 +57,7 @@ function Controls({
           step={0.05}
         />
         Radius:
-        <Slider
+        <CustomSlider
           value={radius}
           onChange={handleRadius}
           aria-labelledby="opacity-slider"
@@ -50,7 +66,7 @@ function Controls({
           step={1}
         />
         Blur:
-        <Slider
+        <CustomSlider
           value={blur}
           onChange={handleBlur}
           aria-labelledby="opacity-slider"
@@ -60,10 +76,17 @@ function Controls({
         />
       </SlidersContainer>
 
-      <ButtonsContainer>
-        <Button onClick={clearHeatmap}>Clear Heatmap</Button>
-        <Button onClick={deleteImage}>Upload other image</Button>
-        <Button variant="contained" onClick={handleDownload}>
+      <ButtonsContainer justify="flex-end">
+        <Button color="secondary" onClick={clearHeatmap}>
+          <FiRefreshCw />
+          Clear
+        </Button>
+        <Button color="secondary" onClick={deleteImage}>
+          <FiTrash2 />
+          Delete
+        </Button>
+        <Button color="primary" onClick={handleDownload}>
+          <FiDownloadCloud />
           Download
         </Button>
       </ButtonsContainer>
